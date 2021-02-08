@@ -356,7 +356,7 @@ open class InputBarAccessoryView: UIView {
         setup()
     }
     
-    public class func defaultInputTextView() -> InputTextView {
+    open class func defaultInputTextView() -> InputTextView {
         let inputTextView = InputTextView()
         inputTextView.translatesAutoresizingMaskIntoConstraints = false
         return inputTextView
