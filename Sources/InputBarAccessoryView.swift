@@ -151,12 +151,7 @@ open class InputBarAccessoryView: UIView {
     }()
     
     /// The InputTextView a user can input a message in
-    open lazy var inputTextView: InputTextView = {
-        let inputTextView = InputTextView()
-        inputTextView.translatesAutoresizingMaskIntoConstraints = false
-        inputTextView.inputBarAccessoryView = self
-        return inputTextView
-    }()
+    open var inputTextView: InputTextView
     
     /// A InputBarButtonItem used as the send button and initially placed in the rightStackView
     open var sendButton: InputBarSendButton = {
@@ -355,16 +350,26 @@ open class InputBarAccessoryView: UIView {
     
     // MARK: - Initialization
     
-    public convenience init() {
-        self.init(frame: .zero)
+    public init(inputTextView: InputTextView = defaultInputTextView()) {
+        self.inputTextView = inputTextView
+        super.init(frame: .zero)
+        setup()
+    }
+    
+    public class func defaultInputTextView() -> InputTextView {
+        let inputTextView = InputTextView()
+        inputTextView.translatesAutoresizingMaskIntoConstraints = false
+        return inputTextView
     }
     
     public override init(frame: CGRect) {
+        self.inputTextView = InputBarAccessoryView.defaultInputTextView()
         super.init(frame: frame)
         setup()
     }
     
     required public init?(coder aDecoder: NSCoder) {
+        self.inputTextView = InputBarAccessoryView.defaultInputTextView()
         super.init(coder: aDecoder)
         setup()
     }
@@ -391,7 +396,8 @@ open class InputBarAccessoryView: UIView {
     
     /// Sets up the default properties
     open func setup() {
-
+        inputTextView.inputBarAccessoryView = self
+        
         backgroundColor = InputBarAccessoryView.defaultBackgroundColor
         autoresizingMask = [.flexibleHeight]
         setupSubviews()
